@@ -7,8 +7,13 @@ public class KnightPieceStrategy implements PieceStrategy {
     }
 
     @Override
-    public boolean isLegalPosition(int x, int y, int size) {
+    public boolean isOutOfBounds(int x, int y, int size) {
         return !(x<0 || y<0 || x >= size || y >= size);
+    }
+
+    @Override
+    public boolean isMovementFeasible(Pair<Integer, Integer> piecePosition, int newX, int newY) {
+        return false;
     }
 
     @Override

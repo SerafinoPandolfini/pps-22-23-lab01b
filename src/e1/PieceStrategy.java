@@ -4,9 +4,14 @@ public interface PieceStrategy {
 
 
     /**
-     * @return if the selected position is legal or not
+     * @return if the selected position is out of bounds or not
      */
-    boolean isLegalPosition(int x, int y, int size);
+    boolean isOutOfBounds(int x, int y, int size);
+
+    /**
+     * @return if the movement is feasible for the piece
+     */
+    boolean isMovementFeasible(Pair<Integer, Integer> piecePosition, int newX, int newY);
 
     /**
      * @return if the piece eat the pawn or not

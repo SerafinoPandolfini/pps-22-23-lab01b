@@ -8,17 +8,20 @@ public class LogicsImpl implements Logics {
 	private Pair<Integer,Integer> knight;
 	private final Random random = new Random();
 	private final int size;
-	 
-    public LogicsImpl(int size){
-    	this.size = size;
-        this.pawn = this.randomEmptyPosition();
-        this.knight = this.randomEmptyPosition();	
+	private final PieceStrategy knightStrategy;
+
+    public LogicsImpl(int gridSize){
+    	size = gridSize;
+        pawn = randomEmptyPosition();
+        knight = randomEmptyPosition();
+		knightStrategy = new KnightPieceStrategy();
     }
 
 	public LogicsImpl(int gridSize, Pair<Integer, Integer> knightPosition, Pair<Integer, Integer> pawnPosition) {
 		size = gridSize;
 		pawn = pawnPosition;
 		knight = knightPosition;
+		knightStrategy = new KnightPieceStrategy();
 	}
 
 	private final Pair<Integer,Integer> randomEmptyPosition(){
@@ -29,7 +32,7 @@ public class LogicsImpl implements Logics {
     
 	@Override
 	public boolean hit(int row, int col) {
-		if (row<0 || col<0 || row >= this.size || col >= this.size) {
+		if (!knightStrategy.isOutOfBounds(row, col, size)) {
 			throw new IndexOutOfBoundsException();
 		}
 		// Below a compact way to express allowed moves for the knight
