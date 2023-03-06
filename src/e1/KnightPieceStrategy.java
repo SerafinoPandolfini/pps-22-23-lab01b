@@ -4,7 +4,6 @@ public class KnightPieceStrategy implements PieceStrategy {
 
 
     public KnightPieceStrategy() {
-
     }
 
     @Override
@@ -14,6 +13,6 @@ public class KnightPieceStrategy implements PieceStrategy {
 
     @Override
     public boolean pawnIsEaten(Pair<Integer, Integer> piecePosition, Pair<Integer, Integer> pawnPosition) {
-        return false;
+        return pawnPosition.equals(piecePosition);
     }
 }
