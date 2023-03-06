@@ -1,11 +1,12 @@
 package e1;
 
-public interface MovementStrategy {
+public interface PieceStrategy {
+
 
     /**
      * @return if the selected position is legal or not
      */
-    boolean isLegalPosition(int x, int y);
+    boolean isLegalPosition(int x, int y, int size);
 
     /**
      * @return if the piece eat the pawn or not
