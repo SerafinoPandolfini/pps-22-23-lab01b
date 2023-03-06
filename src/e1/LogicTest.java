@@ -39,4 +39,11 @@ public class LogicTest {
         final int knightNewYPosition = KNIGHT_Y_POSITION + 1;
         assertThrows(IndexOutOfBoundsException.class, () -> logics.hit(knightNewXPosition, knightNewYPosition));
     }
+
+    @Test
+    void testKnightEatPawn(){
+        final int knightNewXPosition = KNIGHT_X_POSITION - 1;
+        final int knightNewYPosition = KNIGHT_Y_POSITION - 2;
+        assertTrue(logics.hit(knightNewXPosition, knightNewYPosition));
+    }
 }
