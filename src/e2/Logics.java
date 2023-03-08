@@ -8,5 +8,7 @@ public interface Logics {
 
     Set<Pair<Integer, Integer>> getSetOfMines();
 
+    Set<Pair<Integer, Integer>> getNotMinesClickedCell();
+
     boolean isMine(Pair<Integer, Integer> position);
 }
