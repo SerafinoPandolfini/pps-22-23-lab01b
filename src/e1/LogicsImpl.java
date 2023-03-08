@@ -19,7 +19,8 @@ public class LogicsImpl implements Logics {
 	public LogicsImpl(int gridSize, Pair<Integer, Integer> knightPosition, Pair<Integer, Integer> pawnPosition) {
 		knightStrategy = new KnightPieceStrategy();
 		size = gridSize;
-		if (knightStrategy.isOutOfBounds(knightPosition, size) || knightStrategy.isOutOfBounds(pawnPosition, size)) {
+		if (knightStrategy.isOutOfBounds(knightPosition, size) || knightStrategy.isOutOfBounds(pawnPosition, size) ||
+		knightPosition.equals(pawnPosition)) {
 			pawn = randomEmptyPosition();
 			knight = randomEmptyPosition();
 		} else {
