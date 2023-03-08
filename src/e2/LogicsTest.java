@@ -4,6 +4,8 @@ import e1.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class LogicsTest {
 
     private static final int SIZE = 7;
@@ -15,5 +17,9 @@ public class LogicsTest {
         logics = new LogicsImpl(SIZE, MINES);
     }
 
+    @Test
+    void testMinesPlacement() {
+        assertEquals(MINES, logics.getSetOfMines().size());
+    }
 }
 
