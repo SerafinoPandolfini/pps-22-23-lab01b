@@ -2,11 +2,10 @@ package e1;
 
 public interface PieceStrategy {
 
-
     /**
      * @return if the selected position is out of bounds or not
      */
-    boolean isOutOfBounds(int x, int y, int size);
+    boolean isOutOfBounds(Pair<Integer, Integer> piecePosition, int size);
 
     /**
      * @return if the movement is feasible for the piece

@@ -10,18 +10,22 @@ public class LogicsImpl implements Logics {
 	private final int size;
 	private final PieceStrategy knightStrategy;
 
-    public LogicsImpl(int gridSize){
-    	size = gridSize;
-        pawn = randomEmptyPosition();
-        knight = randomEmptyPosition();
-		knightStrategy = new KnightPieceStrategy();
-    }
+	private static final Pair<Integer,Integer> ILLEGAL_POSITION = new Pair<>(-1, -1);
+
+	public LogicsImpl(int gridSize){
+		this(gridSize, ILLEGAL_POSITION, ILLEGAL_POSITION);
+	}
 
 	public LogicsImpl(int gridSize, Pair<Integer, Integer> knightPosition, Pair<Integer, Integer> pawnPosition) {
-		size = gridSize;
-		pawn = pawnPosition;
-		knight = knightPosition;
 		knightStrategy = new KnightPieceStrategy();
+		size = gridSize;
+		if (knightStrategy.isOutOfBounds(knightPosition, size) || knightStrategy.isOutOfBounds(pawnPosition, size)) {
+			pawn = randomEmptyPosition();
+			knight = randomEmptyPosition();
+		} else {
+			pawn = pawnPosition;
+			knight = knightPosition;
+		}
 	}
 
 	private final Pair<Integer,Integer> randomEmptyPosition(){
@@ -32,7 +36,7 @@ public class LogicsImpl implements Logics {
     
 	@Override
 	public boolean hit(int row, int col) {
-		if (!knightStrategy.isOutOfBounds(row, col, size)) {
+		if (knightStrategy.isOutOfBounds(new Pair<>(row, col), size)) {
 			throw new IndexOutOfBoundsException();
 		}
 		if (knightStrategy.isMovementFeasible(knight, row, col)) {

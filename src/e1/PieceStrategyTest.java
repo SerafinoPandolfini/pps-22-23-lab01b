@@ -18,10 +18,10 @@ public class PieceStrategyTest {
 
     @Test
     void testLegalPosition() {
-        assertFalse(knightPieceStrategy.isOutOfBounds(LEGAL_POSITION, GRID_SIZE, GRID_SIZE));
-        assertFalse(knightPieceStrategy.isOutOfBounds(GRID_SIZE, LEGAL_POSITION, GRID_SIZE));
-        assertFalse(knightPieceStrategy.isOutOfBounds(GRID_SIZE, GRID_SIZE, GRID_SIZE));
-        assertTrue(knightPieceStrategy.isOutOfBounds(LEGAL_POSITION, LEGAL_POSITION, GRID_SIZE));
+        assertTrue(knightPieceStrategy.isOutOfBounds(new Pair<>(LEGAL_POSITION, GRID_SIZE), GRID_SIZE));
+        assertTrue(knightPieceStrategy.isOutOfBounds(new Pair<>(GRID_SIZE, LEGAL_POSITION), GRID_SIZE));
+        assertTrue(knightPieceStrategy.isOutOfBounds(new Pair<>(GRID_SIZE, GRID_SIZE), GRID_SIZE));
+        assertFalse(knightPieceStrategy.isOutOfBounds(new Pair<>(LEGAL_POSITION, LEGAL_POSITION), GRID_SIZE));
     }
 
     @Test

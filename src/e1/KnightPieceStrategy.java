@@ -7,8 +7,9 @@ public class KnightPieceStrategy implements PieceStrategy {
     }
 
     @Override
-    public boolean isOutOfBounds(int x, int y, int size) {
-        return !(x<0 || y<0 || x >= size || y >= size);
+    public boolean isOutOfBounds(Pair<Integer, Integer> piecePosition, int size) {
+        return piecePosition.getX() < 0 || piecePosition.getY() < 0 ||
+                piecePosition.getX() >= size || piecePosition.getY() >= size;
     }
 
     @Override
