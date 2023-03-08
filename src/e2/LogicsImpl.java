@@ -1,7 +1,5 @@
 package e2;
 
-import e2.Pair;
-
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -12,7 +10,8 @@ public class LogicsImpl implements Logics {
     private final int numberOfMines;
     private final Random random = new Random();
     private final Set<Pair<Integer, Integer>> setOfMines;
-    private final Set<Pair<Integer, Integer>> notMinesClickedCell;
+    private final Set<Cell2D<Integer>> notMinesClickedCell;
+    private final MinesweeperStrategy strategy;
 
     public LogicsImpl(int size, int mines) {
         gridSize = size;
@@ -22,6 +21,7 @@ public class LogicsImpl implements Logics {
         while (setOfMines.size() < numberOfMines){
           setOfMines.add(generateMinePosition());
         }
+        strategy = new MinesweeperStrategyImpl();
     }
 
     private Pair<Integer,Integer> generateMinePosition() {
@@ -34,7 +34,7 @@ public class LogicsImpl implements Logics {
     }
 
     @Override
-    public Set<Pair<Integer, Integer>> getNotMinesClickedCell() {
+    public Set<Cell2D<Integer>> getNotMinesClickedCell() {
         return notMinesClickedCell;
     }
 
@@ -43,7 +43,7 @@ public class LogicsImpl implements Logics {
         if (setOfMines.contains(position)) {
             return true;
         }
-        notMinesClickedCell.add(position);
+        notMinesClickedCell.add(new Cell2D<>(position,strategy.getValueFromSurroundingCells(position)));
         return false;
     }
 
