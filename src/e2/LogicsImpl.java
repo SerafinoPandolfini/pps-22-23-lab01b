@@ -1,6 +1,6 @@
 package e2;
 
-import e1.Pair;
+import e2.Pair;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -8,8 +8,8 @@ import java.util.Set;
 
 public class LogicsImpl implements Logics {
 
-    private int gridSize;
-    private int numberOfMines;
+    private final int gridSize;
+    private final int numberOfMines;
 
     private final Random random = new Random();
 
@@ -32,4 +32,11 @@ public class LogicsImpl implements Logics {
     public Set<Pair<Integer, Integer>> getSetOfMines() {
         return setOfMines;
     }
+
+    @Override
+    public boolean isMine(Pair<Integer, Integer> position) {
+        return setOfMines.contains(position);
+    }
+
+
 }
