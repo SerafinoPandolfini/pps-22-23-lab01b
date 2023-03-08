@@ -35,12 +35,9 @@ public class LogicsImpl implements Logics {
 		if (!knightStrategy.isOutOfBounds(row, col, size)) {
 			throw new IndexOutOfBoundsException();
 		}
-		// Below a compact way to express allowed moves for the knight
-		int x = row-this.knight.getX();
-		int y = col-this.knight.getY();
-		if (x!=0 && y!=0 && Math.abs(x)+Math.abs(y)==3) {
+		if (knightStrategy.isMovementFeasible(knight, row, col)) {
 			this.knight = new Pair<>(row,col);
-			return this.pawn.equals(this.knight);
+			return knightStrategy.pawnIsEaten(knight, pawn);
 		}
 		return false;
 	}

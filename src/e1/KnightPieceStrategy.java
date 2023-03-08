@@ -12,9 +12,9 @@ public class KnightPieceStrategy implements PieceStrategy {
     }
 
     @Override
-    public boolean isMovementFeasible(Pair<Integer, Integer> piecePosition, int newX, int newY) {
-        int x = newX-piecePosition.getX();
-        int y = newY-piecePosition.getY();
+    public boolean isMovementFeasible(Pair<Integer, Integer> piecePosition, int row, int col) {
+        int x = row-piecePosition.getX();
+        int y = col-piecePosition.getY();
         return x!=0 && y!=0 && Math.abs(x)+Math.abs(y)==3;
     }
 
