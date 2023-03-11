@@ -88,10 +88,11 @@ public class GUI extends JFrame {
                 entry.getKey().setText("F");
             }
             if (entry.getKey().getText().equals("F") && !logics.isFlagged(entry.getValue())) {
-                entry.getKey().setText("");
+                entry.getKey().setText(" ");
             }
             if (logics.isClicked(entry.getValue())) {
                 entry.getKey().setText(logics.getCellValue(entry.getValue()).toString());
+                entry.getKey().setEnabled(false);
             }
     	}
     }
