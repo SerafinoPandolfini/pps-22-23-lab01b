@@ -21,10 +21,8 @@ public class GUI extends JFrame {
         this.logics = new LogicsImpl(size, mines);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(100*size, 100*size);
-        
         JPanel panel = new JPanel(new GridLayout(size,size));
         this.getContentPane().add(BorderLayout.CENTER,panel);
-        
         ActionListener onClick = (e)->{
             final JButton bt = (JButton)e.getSource();
             final Pair<Integer, Integer> pos = buttons.get(bt);
@@ -43,7 +41,8 @@ public class GUI extends JFrame {
             }
         };
 
-        MouseInputListener onRightClick = new MouseInputAdapter() {
+        MouseInputListener onRightClick;
+        onRightClick = new MouseInputAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 final JButton bt = (JButton)e.getSource();
@@ -51,10 +50,10 @@ public class GUI extends JFrame {
                     final Pair<Integer,Integer> pos = buttons.get(bt);
                     logics.flagCell(pos);
                 }
-                drawBoard(); 
+                drawBoard();
             }
         };
-                
+
         for (int i=0; i<size; i++){
             for (int j=0; j<size; j++){
                 final JButton jb = new JButton(" ");

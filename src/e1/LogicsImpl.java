@@ -9,17 +9,17 @@ public class LogicsImpl implements Logics {
 	private final Random random = new Random();
 	private final int size;
 	private final PieceStrategy knightStrategy;
-
-	private static final Pair<Integer,Integer> ILLEGAL_POSITION = new Pair<>(-1, -1);
-
+	private final PositionStrategy positionStrategy;
+	private static final int ILLEGAL_POSITION = -1;
 	public LogicsImpl(int gridSize){
-		this(gridSize, ILLEGAL_POSITION, ILLEGAL_POSITION);
+		this(gridSize, new Pair<>(ILLEGAL_POSITION, ILLEGAL_POSITION), new Pair<>(ILLEGAL_POSITION, ILLEGAL_POSITION));
 	}
 
 	public LogicsImpl(int gridSize, Pair<Integer, Integer> knightPosition, Pair<Integer, Integer> pawnPosition) {
 		knightStrategy = new KnightPieceStrategy();
+		positionStrategy = new PositionStrategyImpl();
 		size = gridSize;
-		if (knightStrategy.isOutOfBounds(knightPosition, size) || knightStrategy.isOutOfBounds(pawnPosition, size) ||
+		if (positionStrategy.isOutOfBounds(knightPosition, size) || positionStrategy.isOutOfBounds(pawnPosition, size) ||
 		knightPosition.equals(pawnPosition)) {
 			pawn = randomEmptyPosition();
 			knight = randomEmptyPosition();
@@ -29,7 +29,7 @@ public class LogicsImpl implements Logics {
 		}
 	}
 
-	private final Pair<Integer,Integer> randomEmptyPosition(){
+	private Pair<Integer,Integer> randomEmptyPosition(){
     	Pair<Integer,Integer> pos = new Pair<>(this.random.nextInt(size),this.random.nextInt(size));
     	// the recursive call below prevents clash with an existing pawn
     	return this.pawn!=null && this.pawn.equals(pos) ? randomEmptyPosition() : pos;
@@ -37,10 +37,10 @@ public class LogicsImpl implements Logics {
     
 	@Override
 	public boolean hit(int row, int col) {
-		if (knightStrategy.isOutOfBounds(new Pair<>(row, col), size)) {
+		if (positionStrategy.isOutOfBounds(new Pair<>(row, col), size)) {
 			throw new IndexOutOfBoundsException();
 		}
-		if (knightStrategy.isMovementFeasible(knight, row, col)) {
+		if (positionStrategy.isMovementFeasible(knight, row, col)) {
 			this.knight = new Pair<>(row,col);
 			return knightStrategy.pawnIsEaten(knight, pawn);
 		}
