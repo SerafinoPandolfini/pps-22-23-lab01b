@@ -55,4 +55,6 @@ public interface Logics {
      * @param position cell left-clicked
      */
     void leftClickCell(Pair<Integer, Integer> position);
+
+    boolean isGameWon();
 }

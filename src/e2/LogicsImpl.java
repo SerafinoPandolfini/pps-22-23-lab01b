@@ -84,4 +84,9 @@ public class LogicsImpl implements Logics {
                 .findFirst()
                 .orElse(unclickedCellValue);
     }
+
+    @Override
+    public boolean isGameWon() {
+        return (setOfMines.size() + notMinesClickedCell.size() == gridSize * gridSize);
+    }
 }
