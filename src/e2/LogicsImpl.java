@@ -11,7 +11,6 @@ public class LogicsImpl implements Logics {
     private final Random random = new Random();
     private final Set<Pair<Integer, Integer>> setOfMines;
     private final Set<Cell2D<Integer>> notMinesClickedCell;
-
     private final Set<Pair<Integer, Integer>> flaggedCellSet;
     private final CellCounterStrategy cellCounterStrategy;
 
@@ -24,7 +23,7 @@ public class LogicsImpl implements Logics {
         while (setOfMines.size() < numberOfMines){
           setOfMines.add(generateMinePosition());
         }
-        cellCounterStrategy = new CellCounterStrategyImpl(size);
+        cellCounterStrategy = new CellCounterStrategyImpl(size, setOfMines);
     }
 
     private Pair<Integer,Integer> generateMinePosition() {
@@ -46,7 +45,9 @@ public class LogicsImpl implements Logics {
         if (isMine(position)) {
             return true;
         }
-        notMinesClickedCell.add(new Cell2D<>(position, cellCounterStrategy.cellValue(position, setOfMines)));
+        System.out.println("START AUTOCLICK");
+        notMinesClickedCell.addAll(cellCounterStrategy.autoClick(
+                new Cell2D<>(position, cellCounterStrategy.cellValue(position)), new HashSet<>()));
         return false;
     }
 
@@ -76,15 +77,11 @@ public class LogicsImpl implements Logics {
 
     @Override
     public Integer getNotMineCellValue(Pair<Integer, Integer> position) {
+        int unclickedCellValue = -1;
         return notMinesClickedCell.stream()
                 .filter(t -> t.getPosition().equals(position))
                 .map(Cell2D::getValue)
                 .findFirst()
-                .orElse(0);
-
+                .orElse(unclickedCellValue);
     }
-
-
-
-
 }

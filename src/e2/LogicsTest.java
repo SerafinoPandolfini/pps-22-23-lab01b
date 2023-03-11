@@ -88,5 +88,18 @@ public class LogicsTest {
         clickAllCell(Click.LEFT);
         assertEquals(numberOfFlaggedCells, logics.getFlaggedCellSet().size());
     }
+
+    @Test
+    void testAutoClickedCell() {
+        int numberOfUserClickedCell = 1;
+        CellCounterStrategy cellCounterStrategy = new CellCounterStrategyImpl(SIZE, logics.getSetOfMines());
+        Pair<Integer, Integer> zeroValueCell;
+        do {
+            zeroValueCell = new Pair<>(this.random.nextInt(SIZE), this.random.nextInt(SIZE));
+        } while (logics.getSetOfMines().contains(notMinePosition) ||
+                cellCounterStrategy.cellValue(zeroValueCell) > 0);
+        logics.clickCell(zeroValueCell);
+        assertNotEquals(numberOfUserClickedCell, logics.getNotMinesClickedCell().size());
+    }
 }
 
