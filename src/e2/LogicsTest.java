@@ -48,10 +48,12 @@ public class LogicsTest {
 
     @Test
     void testClickOnNotMine() {
+        int clickedCells = 0;
         logics.clickCell(minePosition);
-        assertEquals(0, logics.getClickedCell().size());
+        assertEquals(clickedCells, logics.getClickedCell().size());
         logics.clickCell(notMinePosition);
-        assertEquals(1, logics.getClickedCell().size());
+        clickedCells = 1;
+        assertEquals(clickedCells, logics.getClickedCell().size());
     }
 
     public enum Click {
