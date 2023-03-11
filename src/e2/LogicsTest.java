@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,13 +54,17 @@ public class LogicsTest {
         assertEquals(1, logics.getNotMinesClickedCell().size());
     }
 
+    private void clickAllCell() {
+        IntStream.rangeClosed(0, SIZE - 1).forEach(x ->
+                IntStream.rangeClosed(0, SIZE - 1).forEach(y ->
+                    logics.clickCell(new Pair<>(x, y))
+                )
+        );
+    }
+
     @Test
     void testCellCounter() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                logics.clickCell(new Pair<>(i, j));
-            }
-        }
+        clickAllCell();
         logics.getNotMinesClickedCell().forEach(t -> assertTrue(t.getValue() >= 0));
     }
 }
