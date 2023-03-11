@@ -1,6 +1,5 @@
 package e2;
 
-import e2.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,16 +41,26 @@ public class LogicsTest {
 
     @Test
     void testClickOnMine() {
-        assertTrue(logics.isMine(minePosition));
-        assertFalse(logics.isMine(notMinePosition));
+        assertTrue(logics.clickCell(minePosition));
+        assertFalse(logics.clickCell(notMinePosition));
     }
 
     @Test
     void testClickOnNotMine() {
-        logics.isMine(minePosition);
+        logics.clickCell(minePosition);
         assertEquals(0, logics.getNotMinesClickedCell().size());
-        logics.isMine(notMinePosition);
+        logics.clickCell(notMinePosition);
         assertEquals(1, logics.getNotMinesClickedCell().size());
+    }
+
+    @Test
+    void testCellCounter() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                logics.clickCell(new Pair<>(i, j));
+            }
+        }
+        logics.getNotMinesClickedCell().forEach(t -> assertTrue(t.getValue() >= 0));
     }
 }
 

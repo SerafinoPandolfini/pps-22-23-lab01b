@@ -11,7 +11,7 @@ public class LogicsImpl implements Logics {
     private final Random random = new Random();
     private final Set<Pair<Integer, Integer>> setOfMines;
     private final Set<Cell2D<Integer>> notMinesClickedCell;
-    private final MinesweeperStrategy strategy;
+    private final CellCounterStrategy cellCounterStrategy;
 
     public LogicsImpl(int size, int mines) {
         gridSize = size;
@@ -21,7 +21,7 @@ public class LogicsImpl implements Logics {
         while (setOfMines.size() < numberOfMines){
           setOfMines.add(generateMinePosition());
         }
-        strategy = new MinesweeperStrategyImpl();
+        cellCounterStrategy = new CellCounterStrategyImpl(size);
     }
 
     private Pair<Integer,Integer> generateMinePosition() {
@@ -39,13 +39,32 @@ public class LogicsImpl implements Logics {
     }
 
     @Override
-    public boolean isMine(Pair<Integer, Integer> position) {
-        if (setOfMines.contains(position)) {
+    public boolean clickCell(Pair<Integer, Integer> position) {
+        if (isMine(position)) {
             return true;
         }
-        notMinesClickedCell.add(new Cell2D<>(position,strategy.getValueFromSurroundingCells(position)));
+        notMinesClickedCell.add(new Cell2D<>(position, cellCounterStrategy.cellValue(position, setOfMines)));
         return false;
     }
+
+    @Override
+    public boolean isMine(Pair<Integer, Integer> position) {
+        return setOfMines.contains(position);
+    }
+
+    @Override
+    public Integer getNotMineCellValue(Pair<Integer, Integer> position) {
+        return notMinesClickedCell.stream()
+                .filter(t -> t.getPosition().equals(position))
+                .map(Cell2D::getValue)
+                .findFirst()
+                .orElse(0);
+
+    }
+
+
+
+
 
 
 }

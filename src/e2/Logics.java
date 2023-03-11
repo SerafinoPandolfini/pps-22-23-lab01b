@@ -8,5 +8,9 @@ public interface Logics {
 
     Set<Cell2D<Integer>> getNotMinesClickedCell();
 
+    boolean clickCell(Pair<Integer, Integer> position);
+
     boolean isMine(Pair<Integer, Integer> position);
+
+    Integer getNotMineCellValue(Pair<Integer, Integer> position);
 }
