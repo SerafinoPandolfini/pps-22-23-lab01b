@@ -8,27 +8,13 @@ public interface Logics {
      *
      * @return set of pairs containing a mine
      */
-    Set<Pair<Integer, Integer>> getSetOfMines();
+    Set<Pair<Integer, Integer>> getMineSet();
 
     /**
      *
      * @return set of cells not containing a mine with the value of the cell
      */
-    Set<Cell2D<Integer>> getNotMinesClickedCell();
-
-    /**
-     *
-     * @param position cell clicked
-     * @return if the cell clicked is a mine or not
-     */
-    boolean clickCell(Pair<Integer, Integer> position);
-
-    /**
-     *
-     * @param position cell to check
-     * @return if the cell is flagged or not
-     */
-    boolean isFlagged(Pair<Integer, Integer> position);
+    Set<Cell2D<Integer>> getClickedCell();
 
     /**
      *
@@ -45,16 +31,41 @@ public interface Logics {
 
     /**
      *
-     * @param position cell to get the value
-     * @return the value of the selected cell
+     * @param position cell to check
+     * @return if the cell is clicked or not
      */
-    Integer getNotMineCellValue(Pair<Integer, Integer> position);
+    boolean isClicked(Pair<Integer, Integer> position);
+
+    /**
+     *
+     * @param position cell to check
+     * @return if the cell is flagged or not
+     */
+    boolean isFlagged(Pair<Integer, Integer> position);
+
+    /**
+     *
+     * @param position cell clicked
+     * @return if the cell clicked is a mine or not
+     */
+    boolean clickCell(Pair<Integer, Integer> position);
 
     /**
      *
      * @param position cell left-clicked
      */
-    void leftClickCell(Pair<Integer, Integer> position);
+    void flagCell(Pair<Integer, Integer> position);
 
+    /**
+     *
+     * @param position cell to get the value
+     * @return the value of the selected cell
+     */
+    Integer getCellValue(Pair<Integer, Integer> position);
+
+    /**
+     *
+     * @return true if the game is won
+     */
     boolean isGameWon();
 }

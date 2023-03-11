@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
+import java.io.Serial;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -11,6 +12,7 @@ import java.awt.event.MouseEvent;
 
 public class GUI extends JFrame {
     
+    @Serial
     private static final long serialVersionUID = -6218820567019985015L;
     private final Map<JButton,Pair<Integer,Integer>> buttons = new HashMap<>();
     private final Logics logics;
@@ -47,7 +49,7 @@ public class GUI extends JFrame {
                 final JButton bt = (JButton)e.getSource();
                 if (bt.isEnabled()){
                     final Pair<Integer,Integer> pos = buttons.get(bt);
-                    logics.leftClickCell(pos);
+                    logics.flagCell(pos);
                 }
                 drawBoard(); 
             }
@@ -88,13 +90,9 @@ public class GUI extends JFrame {
             if (entry.getKey().getText().equals("F") && !logics.isFlagged(entry.getValue())) {
                 entry.getKey().setText("");
             }
-
-            Integer cellValue = logics.getNotMineCellValue(entry.getValue());
-            if (cellValue >= 0) {
-                entry.getKey().setText(cellValue.toString());
-                entry.getKey().setEnabled(false);
+            if (logics.isClicked(entry.getValue())) {
+                entry.getKey().setText(logics.getCellValue(entry.getValue()).toString());
             }
     	}
     }
-    
 }

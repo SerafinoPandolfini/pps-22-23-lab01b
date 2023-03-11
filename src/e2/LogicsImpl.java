@@ -3,27 +3,26 @@ package e2;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class LogicsImpl implements Logics {
 
     private final int gridSize;
-    private final int numberOfMines;
     private final Random random = new Random();
-    private final Set<Pair<Integer, Integer>> setOfMines;
-    private final Set<Cell2D<Integer>> notMinesClickedCell;
+    private final Set<Pair<Integer, Integer>> mineSet;
+    private final Set<Cell2D<Integer>> clickedCell;
     private final Set<Pair<Integer, Integer>> flaggedCellSet;
     private final CellCounterStrategy cellCounterStrategy;
 
     public LogicsImpl(int size, int mines) {
         gridSize = size;
-        numberOfMines = mines;
-        setOfMines = new HashSet<>();
-        notMinesClickedCell = new HashSet<>();
+        mineSet = new HashSet<>();
+        clickedCell = new HashSet<>();
         flaggedCellSet = new HashSet<>();
-        while (setOfMines.size() < numberOfMines){
-          setOfMines.add(generateMinePosition());
+        while (mineSet.size() < mines){
+          mineSet.add(generateMinePosition());
         }
-        cellCounterStrategy = new CellCounterStrategyImpl(size, setOfMines);
+        cellCounterStrategy = new CellCounterStrategyImpl(size, mineSet);
     }
 
     private Pair<Integer,Integer> generateMinePosition() {
@@ -31,38 +30,13 @@ public class LogicsImpl implements Logics {
     }
 
     @Override
-    public Set<Pair<Integer, Integer>> getSetOfMines() {
-        return setOfMines;
+    public Set<Pair<Integer, Integer>> getMineSet() {
+        return mineSet;
     }
 
     @Override
-    public Set<Cell2D<Integer>> getNotMinesClickedCell() {
-        return notMinesClickedCell;
-    }
-
-    @Override
-    public boolean clickCell(Pair<Integer, Integer> position) {
-        if (isMine(position)) {
-            return true;
-        }
-        System.out.println("START AUTOCLICK");
-        notMinesClickedCell.addAll(cellCounterStrategy.autoClick(
-                new Cell2D<>(position, cellCounterStrategy.cellValue(position)), new HashSet<>()));
-        return false;
-    }
-
-    @Override
-    public void leftClickCell(Pair<Integer, Integer> position) {
-        if (flaggedCellSet.contains(position)) {
-            flaggedCellSet.remove(position);
-        } else {
-            flaggedCellSet.add(position);
-        }
-    }
-
-    @Override
-    public boolean isFlagged(Pair<Integer, Integer> position) {
-        return flaggedCellSet.contains(position);
+    public Set<Cell2D<Integer>> getClickedCell() {
+        return clickedCell;
     }
 
     @Override
@@ -72,21 +46,53 @@ public class LogicsImpl implements Logics {
 
     @Override
     public boolean isMine(Pair<Integer, Integer> position) {
-        return setOfMines.contains(position);
+        return mineSet.contains(position);
     }
 
     @Override
-    public Integer getNotMineCellValue(Pair<Integer, Integer> position) {
-        int unclickedCellValue = -1;
-        return notMinesClickedCell.stream()
+    public boolean isClicked(Pair<Integer, Integer> position) {
+        return clickedCell.stream()
+                .map(Cell2D::getPosition)
+                .collect(Collectors.toSet())
+                .contains(position);
+    }
+
+    @Override
+    public boolean isFlagged(Pair<Integer, Integer> position) {
+        return flaggedCellSet.contains(position);
+    }
+
+    @Override
+    public boolean clickCell(Pair<Integer, Integer> position) {
+        if (isMine(position)) {
+            return true;
+        }
+        clickedCell.addAll(cellCounterStrategy.autoClick(
+                new Cell2D<>(position, cellCounterStrategy.cellValue(position)), new HashSet<>()));
+        return false;
+    }
+
+    @Override
+    public void flagCell(Pair<Integer, Integer> position) {
+        if (flaggedCellSet.contains(position)) {
+            flaggedCellSet.remove(position);
+        } else {
+            flaggedCellSet.add(position);
+        }
+    }
+
+    @Override
+    public Integer getCellValue(Pair<Integer, Integer> position) {
+        int notClickedCellValue = -1;
+        return clickedCell.stream()
                 .filter(t -> t.getPosition().equals(position))
                 .map(Cell2D::getValue)
                 .findFirst()
-                .orElse(unclickedCellValue);
+                .orElse(notClickedCellValue);
     }
 
     @Override
     public boolean isGameWon() {
-        return (setOfMines.size() + notMinesClickedCell.size() == gridSize * gridSize);
+        return (mineSet.size() + clickedCell.size() == gridSize * gridSize);
     }
 }
