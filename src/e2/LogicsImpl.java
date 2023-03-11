@@ -11,6 +11,8 @@ public class LogicsImpl implements Logics {
     private final Random random = new Random();
     private final Set<Pair<Integer, Integer>> setOfMines;
     private final Set<Cell2D<Integer>> notMinesClickedCell;
+
+    private final Set<Pair<Integer, Integer>> flaggedCellSet;
     private final CellCounterStrategy cellCounterStrategy;
 
     public LogicsImpl(int size, int mines) {
@@ -18,6 +20,7 @@ public class LogicsImpl implements Logics {
         numberOfMines = mines;
         setOfMines = new HashSet<>();
         notMinesClickedCell = new HashSet<>();
+        flaggedCellSet = new HashSet<>();
         while (setOfMines.size() < numberOfMines){
           setOfMines.add(generateMinePosition());
         }
@@ -48,6 +51,25 @@ public class LogicsImpl implements Logics {
     }
 
     @Override
+    public void leftClickCell(Pair<Integer, Integer> position) {
+        if (flaggedCellSet.contains(position)) {
+            flaggedCellSet.remove(position);
+        } else {
+            flaggedCellSet.add(position);
+        }
+    }
+
+    @Override
+    public boolean isFlagged(Pair<Integer, Integer> position) {
+        return flaggedCellSet.contains(position);
+    }
+
+    @Override
+    public Set<Pair<Integer, Integer>> getFlaggedCellSet() {
+        return flaggedCellSet;
+    }
+
+    @Override
     public boolean isMine(Pair<Integer, Integer> position) {
         return setOfMines.contains(position);
     }
@@ -61,8 +83,6 @@ public class LogicsImpl implements Logics {
                 .orElse(0);
 
     }
-
-
 
 
 

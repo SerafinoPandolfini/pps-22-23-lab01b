@@ -54,18 +54,39 @@ public class LogicsTest {
         assertEquals(1, logics.getNotMinesClickedCell().size());
     }
 
-    private void clickAllCell() {
+    public enum Click {
+        LEFT,
+        RIGHT
+    }
+
+    private void clickAllCell(Click clickType) {
         IntStream.rangeClosed(0, SIZE - 1).forEach(x ->
-                IntStream.rangeClosed(0, SIZE - 1).forEach(y ->
-                    logics.clickCell(new Pair<>(x, y))
-                )
+                IntStream.rangeClosed(0, SIZE - 1).forEach(y -> {
+                    if (clickType.equals(Click.RIGHT)) {
+                        logics.clickCell(new Pair<>(x, y));
+                    }
+                    if (clickType.equals(Click.LEFT)) {
+                        logics.leftClickCell(new Pair<>(x, y));
+                    }
+                })
         );
     }
 
     @Test
     void testCellCounter() {
-        clickAllCell();
+        clickAllCell(Click.RIGHT);
         logics.getNotMinesClickedCell().forEach(t -> assertTrue(t.getValue() >= 0));
+    }
+
+    @Test
+    void testFlaggedCell() {
+        int numberOfFlaggedCells = 1;
+        logics.leftClickCell(minePosition);
+        assertEquals(numberOfFlaggedCells, logics.getFlaggedCellSet().size());
+        numberOfFlaggedCells = SIZE * SIZE;
+        logics.leftClickCell(minePosition);
+        clickAllCell(Click.LEFT);
+        assertEquals(numberOfFlaggedCells, logics.getFlaggedCellSet().size());
     }
 }
 
